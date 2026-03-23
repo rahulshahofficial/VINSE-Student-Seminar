@@ -22,19 +22,19 @@
   }
 
   html, body {
-    min-height: 100dvh;
+    min-height: 100%;
     font-family: 'Source Serif 4', Georgia, serif;
     background: var(--warm-bg);
     color: var(--black);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
   }
 
   .container {
     max-width: 440px;
     margin: 0 auto;
     padding: 44px 24px 40px;
-    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,7 +47,7 @@
   }
 
   .logo {
-    width: 220px;
+    width: 140px;
     height: auto;
     margin-bottom: 10px;
   }
@@ -195,7 +195,7 @@
   }
 
   .footer {
-    margin-top: auto;
+    margin-top: 8px;
     text-align: center;
     animation: fadeUp 0.5s ease-out 0.45s both;
   }
@@ -213,13 +213,10 @@
   }
 
   .bottom-line {
-    position: fixed;
-    bottom: 0;
-    left: 0;
     width: 100%;
     height: 3px;
     background: var(--black);
-    z-index: 10;
+    margin-top: auto;
   }
 
   @keyframes fadeUp {
@@ -242,7 +239,7 @@
       justify-content: center;
     }
 
-    .logo { width: 220px; }
+    .logo { width: 180px; }
     .sub-label { font-size: 15px; margin-bottom: 40px; }
     .talk-title { font-size: 34px; margin-bottom: 30px; }
     .speaker-name { font-size: 19px; }
