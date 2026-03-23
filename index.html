@@ -47,7 +47,7 @@
   }
 
   .logo {
-    width: 180px;
+    width: 140px;
     height: auto;
     margin-bottom: 10px;
   }
@@ -227,10 +227,38 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* Small phones */
   @media (max-width: 360px) {
     .talk-title { font-size: 22px; }
     .card { padding: 16px 18px; gap: 14px; }
     .card-icon { width: 42px; height: 42px; }
+  }
+
+  /* Desktop / tablets */
+  @media (min-width: 768px) {
+    .container {
+      max-width: 600px;
+      padding: 64px 40px 56px;
+      justify-content: center;
+    }
+
+    .logo { width: 180px; }
+    .sub-label { font-size: 15px; margin-bottom: 40px; }
+    .talk-title { font-size: 34px; margin-bottom: 30px; }
+    .speaker-name { font-size: 19px; }
+    .speaker-title { font-size: 14px; }
+    .speaker-affil { font-size: 15px; }
+    .event-meta { font-size: 16px; padding: 12px 28px; margin-top: 24px; }
+    .divider { margin-bottom: 40px; }
+
+    .cards { gap: 16px; }
+    .card { padding: 24px 28px; gap: 22px; border-radius: 12px; }
+    .card-icon { width: 56px; height: 56px; }
+    .card-icon svg { width: 26px; height: 26px; }
+    .card-title { font-size: 17px; }
+    .card-desc { font-size: 13px; }
+
+    .footer p { font-size: 13px; }
   }
 </style>
 </head>
