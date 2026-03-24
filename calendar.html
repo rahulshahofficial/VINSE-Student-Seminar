@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add to Calendar — VINSE Seminar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #F5F0E8;
+    --warm-bg: #FAF7F2;
+    --black: #1A1A1A;
+    --dark: #2C2C2C;
+    --muted: #6B6560;
+    --light-muted: #9C9590;
+    --border: #E0D8CE;
+    --card-bg: #FFFFFF;
+    --accent: #C8553A;
+  }
+
+  html, body {
+    min-height: 100%;
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--warm-bg);
+    color: var(--black);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+
+  .container {
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 44px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease-out both;
+  }
+
+  .logo {
+    width: 140px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .sub-label {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 1.2;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: var(--light-muted);
+    font-weight: 400;
+  }
+
+  .date-badge {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 20px;
+    border: 1.5px solid var(--black);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--black);
+    letter-spacing: 0.3px;
+  }
+
+  /* Divider */
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--border);
+    margin: 0 0 28px;
+    animation: fadeUp 0.6s ease-out 0.1s both;
+  }
+
+  /* Event cards */
+  .events {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    margin-bottom: 32px;
+  }
+
+  .event-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    animation: fadeUp 0.5s ease-out both;
+  }
+
+  .event-card:nth-child(1) { animation-delay: 0.15s; }
+  .event-card:nth-child(2) { animation-delay: 0.22s; }
+  .event-card:nth-child(3) { animation-delay: 0.29s; }
+  .event-card:nth-child(4) { animation-delay: 0.36s; }
+
+  .event-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .event-info { flex: 1; }
+
+  .event-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .event-time {
+    font-size: 12.5px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+
+  .event-location {
+    font-size: 12px;
+    color: var(--light-muted);
+    font-weight: 400;
+  }
+
+  .add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--black);
+    color: var(--warm-bg);
+    border: none;
+    border-radius: 6px;
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .add-btn:hover, .add-btn:active {
+    background: var(--dark);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .add-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .add-btn.added {
+    background: #2E7D32;
+    pointer-events: none;
+  }
+
+  /* Add all button */
+  .add-all-section {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeUp 0.5s ease-out 0.45s both;
+  }
+
+  .add-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: var(--black);
+    color: var(--warm-bg);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .add-all-btn:hover {
+    background: var(--dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .add-all-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Back link */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    transition: color 0.2s ease;
+    animation: fadeUp 0.5s ease-out 0.5s both;
+  }
+
+  .back-link:hover { color: var(--black); }
+
+  .back-link svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Bottom line */
+  .bottom-line {
+    width: 100%;
+    height: 3px;
+    background: var(--black);
+    margin-top: 24px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 360px) {
+    .page-title { font-size: 20px; }
+    .event-card { padding: 16px 18px; }
+    .event-top { flex-direction: column; gap: 10px; }
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      max-width: 600px;
+      padding: 64px 40px 56px;
+    }
+    .logo { width: 180px; }
+    .page-title { font-size: 30px; }
+    .sub-label { font-size: 15px; }
+    .event-card { padding: 24px 28px; border-radius: 12px; }
+    .event-name { font-size: 17px; }
+    .event-time { font-size: 14px; }
+    .event-location { font-size: 13px; }
+    .add-btn { font-size: 13px; padding: 10px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header class="header">
+    <img class="logo" src="VINSE-Logo-Black.png" alt="VINSE">
+    <div class="sub-label">Student Selected Speaker Seminar 2026</div>
+    <h1 class="page-title">Add to Calendar</h1>
+    <p class="page-subtitle">Tap any session to save it to your calendar</p>
+    <div class="date-badge">Friday, April 17, 2026</div>
+  </header>
+
+  <div class="divider"></div>
+
+  <div class="events">
+    <!-- Event 1 -->
+    <div class="event-card">
+      <div class="event-top">
+        <div class="event-info">
+          <div class="event-name">Initiating Collaborations</div>
+          <div class="event-time">9:00 AM – 9:50 AM</div>
+          <div class="event-location">ESB 462</div>
+        </div>
+        <button class="add-btn" onclick="downloadICS(this, 'Initiating Collaborations', '20260417T090000', '20260417T095000', 'ESB 462', 'VINSE Student Selected Speaker Seminar — Breakout Session with Prof. Guihua Yu')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Add
+        </button>
+      </div>
+    </div>
+
+    <!-- Event 2 -->
+    <div class="event-card">
+      <div class="event-top">
+        <div class="event-info">
+          <div class="event-name">PhD to PI</div>
+          <div class="event-time">10:00 AM – 10:50 AM</div>
+          <div class="event-location">ESB 462</div>
+        </div>
+        <button class="add-btn" onclick="downloadICS(this, 'PhD to PI', '20260417T100000', '20260417T105000', 'ESB 462', 'VINSE Student Selected Speaker Seminar — Breakout Session with Prof. Guihua Yu')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Add
+        </button>
+      </div>
+    </div>
+
+    <!-- Event 3 -->
+    <div class="event-card">
+      <div class="event-top">
+        <div class="event-info">
+          <div class="event-name">Lunch &amp; Seminar</div>
+          <div class="event-time">11:30 AM – 1:20 PM</div>
+          <div class="event-location">FGH 134</div>
+        </div>
+        <button class="add-btn" onclick="downloadICS(this, 'VINSE Seminar — Prof. Guihua Yu: Energy-Water Nexus', '20260417T113000', '20260417T132000', 'FGH 134', 'A Soft Material Paradigm for Addressing Energy-Water Nexus Challenges. Lunch (East Side Banh Mi) served at 11:30am for first 60 attendees. Seminar begins at 12:00pm. Gong Cha boba after.')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Add
+        </button>
+      </div>
+    </div>
+
+    <!-- Event 4 -->
+    <div class="event-card">
+      <div class="event-top">
+        <div class="event-info">
+          <div class="event-name">NanoLab to MacroWorld</div>
+          <div class="event-time">1:30 PM – 2:20 PM</div>
+          <div class="event-location">FGH 313</div>
+        </div>
+        <button class="add-btn" onclick="downloadICS(this, 'NanoLab to MacroWorld', '20260417T133000', '20260417T142000', 'FGH 313', 'VINSE Student Selected Speaker Seminar — Breakout Session with Prof. Guihua Yu')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="add-all-section">
+    <button class="add-all-btn" onclick="downloadAllICS()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+      </svg>
+      Add All Events to Calendar
+    </button>
+  </div>
+
+  <a class="back-link" href="index.html">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+    </svg>
+    Back to event page
+  </a>
+</div>
+
+<div class="bottom-line"></div>
+
+<script>
+  // Generate an ICS calendar string for a single event
+  function makeICS(title, dtStart, dtEnd, location, description) {
+    // Escape special characters for ICS
+    const esc = (s) => s.replace(/[,;\\]/g, (m) => '\\' + m).replace(/\n/g, '\\n');
+    const uid = dtStart + '-' + Math.random().toString(36).substr(2, 8) + '@vinse-seminar';
+    const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+    return [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//VINSE//Seminar//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:' + uid,
+      'DTSTAMP:' + now,
+      'DTSTART;TZID=America/Chicago:' + dtStart,
+      'DTEND;TZID=America/Chicago:' + dtEnd,
+      'SUMMARY:' + esc(title),
+      'LOCATION:' + esc(location + ', Vanderbilt University'),
+      'DESCRIPTION:' + esc(description),
+      'STATUS:CONFIRMED',
+      'BEGIN:VALARM',
+      'TRIGGER:-PT15M',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:Reminder',
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+  }
+
+  // Download a single event
+  function downloadICS(btn, title, dtStart, dtEnd, location, description) {
+    const ics = makeICS(title, dtStart, dtEnd, location, description);
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = title.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '_') + '.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // Visual feedback
+    btn.classList.add('added');
+    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg> Added';
+  }
+
+  // Download all events as one .ics file
+  function downloadAllICS() {
+    const events = [
+      { title: 'Initiating Collaborations', start: '20260417T090000', end: '20260417T095000', loc: 'ESB 462', desc: 'VINSE Student Selected Speaker Seminar — Breakout Session with Prof. Guihua Yu' },
+      { title: 'PhD to PI', start: '20260417T100000', end: '20260417T105000', loc: 'ESB 462', desc: 'VINSE Student Selected Speaker Seminar — Breakout Session with Prof. Guihua Yu' },
+      { title: 'VINSE Seminar — Prof. Guihua Yu: Energy-Water Nexus', start: '20260417T113000', end: '20260417T132000', loc: 'FGH 134', desc: 'A Soft Material Paradigm for Addressing Energy-Water Nexus Challenges. Lunch (East Side Banh Mi) served at 11:30am for first 60 attendees. Seminar begins at 12:00pm. Gong Cha boba after.' },
+      { title: 'NanoLab to MacroWorld', start: '20260417T133000', end: '20260417T142000', loc: 'FGH 313', desc: 'VINSE Student Selected Speaker Seminar — Breakout Session with Prof. Guihua Yu' }
+    ];
+
+    const esc = (s) => s.replace(/[,;\\]/g, (m) => '\\' + m).replace(/\n/g, '\\n');
+    const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+    let ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//VINSE//Seminar//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH'
+    ];
+
+    events.forEach((e) => {
+      const uid = e.start + '-' + Math.random().toString(36).substr(2, 8) + '@vinse-seminar';
+      ics.push(
+        'BEGIN:VEVENT',
+        'UID:' + uid,
+        'DTSTAMP:' + now,
+        'DTSTART;TZID=America/Chicago:' + e.start,
+        'DTEND;TZID=America/Chicago:' + e.end,
+        'SUMMARY:' + esc(e.title),
+        'LOCATION:' + esc(e.loc + ', Vanderbilt University'),
+        'DESCRIPTION:' + esc(e.desc),
+        'STATUS:CONFIRMED',
+        'BEGIN:VALARM',
+        'TRIGGER:-PT15M',
+        'ACTION:DISPLAY',
+        'DESCRIPTION:Reminder',
+        'END:VALARM',
+        'END:VEVENT'
+      );
+    });
+
+    ics.push('END:VCALENDAR');
+
+    const blob = new Blob([ics.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'VINSE_Seminar_All_Events.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // Mark all individual buttons as added
+    document.querySelectorAll('.add-btn').forEach((btn) => {
+      btn.classList.add('added');
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg> Added';
+    });
+  }
+</script>
+
+</body>
+</html>
